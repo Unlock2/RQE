@@ -24,12 +24,12 @@
 
 <!-- CSS -->
 <link rel="stylesheet" type="text/css" href="../css/import.css" />
-<link rel="stylesheet" type="text/css" href="../css/board.css" />
-<link rel="stylesheet" type="text/css" href="../css/common.css" />
-<link rel="stylesheet" type="text/css" href="../css/default.css" />
-<link rel="stylesheet" type="text/css" href="../css/layout.css" />
-<link rel="stylesheet" type="text/css" href="../css/login.css" />
-<link rel="stylesheet" type="text/css" href="../css/style.css" />
+<!-- <link rel="stylesheet" type="text/css" href="../css/board.css" /> -->
+<!-- <link rel="stylesheet" type="text/css" href="../css/common.css" /> -->
+<!-- <link rel="stylesheet" type="text/css" href="../css/default.css" /> -->
+<!-- <link rel="stylesheet" type="text/css" href="../css/layout.css" /> -->
+<!-- <link rel="stylesheet" type="text/css" href="../css/login.css" /> -->
+<!-- <link rel="stylesheet" type="text/css" href="../css/style.css" /> -->
 <link rel="stylesheet" type="text/css" href="../css/modal.css" />
 <link rel="stylesheet" type="text/css" href="../css/jquery-ui.css" />
 <link rel="stylesheet" type="text/css" href="../css/jquery-ui.theme.css" />

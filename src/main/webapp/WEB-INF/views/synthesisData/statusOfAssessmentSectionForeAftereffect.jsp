@@ -14,7 +14,7 @@
 	<script type="text/javascript" src="../js/jquery-1.7.1.min.js"></script>
 	<script type="text/javascript" src="../js/jquery-3.3.1.js"></script>
 	<script type="text/javascript" src="../js/jquery-ui-1.9.2.custom.min.js"></script>
-	<script type="text/javascript" src="../js/style.js"></script>
+<!-- 	<script type="text/javascript" src="../js/style.js"></script> -->
 	<script type="text/javascript"
 		src="https://www.gstatic.com/charts/loader.js"></script>
 	<script type="text/javascript"
@@ -25,12 +25,12 @@
 	
 	<!-- CSS -->
 	<link rel="stylesheet" type="text/css" href="../css/import.css" />
-	<link rel="stylesheet" type="text/css" href="../css/board.css" />
-	<link rel="stylesheet" type="text/css" href="../css/common.css" />
-	<link rel="stylesheet" type="text/css" href="../css/default.css" />
-	<link rel="stylesheet" type="text/css" href="../css/layout.css" />
-	<link rel="stylesheet" type="text/css" href="../css/login.css" />
-	<link rel="stylesheet" type="text/css" href="../css/style.css" />
+<!-- 	<link rel="stylesheet" type="text/css" href="../css/board.css" /> -->
+<!-- 	<link rel="stylesheet" type="text/css" href="../css/common.css" /> -->
+<!-- 	<link rel="stylesheet" type="text/css" href="../css/default.css" /> -->
+<!-- 	<link rel="stylesheet" type="text/css" href="../css/layout.css" /> -->
+<!-- 	<link rel="stylesheet" type="text/css" href="../css/login.css" /> -->
+<!-- 	<link rel="stylesheet" type="text/css" href="../css/style.css" /> -->
 	<link rel="stylesheet" type="text/css" href="../css/modal.css" />
 
 </head>
@@ -73,7 +73,7 @@
 					<table id="tbl-evaluation-day">
 						<thead style="background-color: #e6f2ff">
 							<tr>
-								<th colspan="10" style="height: 25PX;"><b>평가 구간 현황(요일별)</b></th>
+								<th colspan="10" style="height: 25PX; background-color: #e6e6ff;"><b>평가 구간 현황(요일별)</b></th>
 							</tr>
 							<tr>
 								<th rowspan="2" style="height: 25PX;">평가 대상명(단위:개)</th>
@@ -88,7 +88,7 @@
 								<th rowspan="2" style="height: 25PX;">총 구간</th>
 							</tr>
 							<tr>
-								<th colspan="7" style="height: 25PX;">정상 주행 구간(총 구간)</th>
+								<th colspan="7" style="height: 25PX">정상 주행 구간(총 구간)</th>
 							</tr>
 						</thead>
 						<tbody></tbody>
@@ -98,7 +98,7 @@
 					<table id="tbl-evaluation-time">
 						<thead style="background-color: #e6f2ff">
 							<tr>
-								<th colspan="9" style="height: 25PX;"><b>평가 구간 현황(시간대별)</b></th>
+								<th colspan="9" style="height: 25PX; background-color: #e6e6ff;"><b>평가 구간 현황(시간대별)</b></th>
 							</tr>
 							<tr>
 								<th rowspan="3" style="height: 25PX;">평가 대상명(단위:개)</th>
@@ -126,7 +126,7 @@
 					<table id="tbl-fore-after">
 						<thead style="background-color: #e6f2ff">
 							<tr>
-								<th colspan="7"><b>선후착 집계(건)</b></th>
+								<th colspan="7" style="background-color: #e6e6ff;"><b>선후착 집계(건)</b></th>
 							</tr>
 							<tr>
 								<th colspan="5" style="height: 25PX;">정상 주행</th>

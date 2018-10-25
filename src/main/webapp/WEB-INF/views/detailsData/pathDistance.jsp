@@ -14,7 +14,7 @@
 <!-- 	<script type="text/javascript" src="../js/jquery-1.7.1.min.js"></script> -->
 <script type="text/javascript" src="../js/jquery-3.3.1.js"></script>
 <script type="text/javascript" src="../js/jquery-ui-1.9.2.custom.min.js"></script>
-<script type="text/javascript" src="../js/style.js"></script>
+<!-- <script type="text/javascript" src="../js/style.js"></script> -->
 <script type="text/javascript"
 	src="../js/jquery.mCustomScrollbar.concat.min.js"></script>
 <script type="text/javascript" src="../js/placeholder.js"></script>
@@ -33,12 +33,12 @@
 
 <!-- CSS -->
 <link rel="stylesheet" type="text/css" href="../css/import.css" />
-<link rel="stylesheet" type="text/css" href="../css/board.css" />
-<link rel="stylesheet" type="text/css" href="../css/common.css" />
-<link rel="stylesheet" type="text/css" href="../css/default.css" />
-<link rel="stylesheet" type="text/css" href="../css/layout.css" />
-<link rel="stylesheet" type="text/css" href="../css/login.css" />
-<link rel="stylesheet" type="text/css" href="../css/style.css" />
+<!-- <link rel="stylesheet" type="text/css" href="../css/board.css" /> -->
+<!-- <link rel="stylesheet" type="text/css" href="../css/common.css" /> -->
+<!-- <link rel="stylesheet" type="text/css" href="../css/default.css" /> -->
+<!-- <link rel="stylesheet" type="text/css" href="../css/layout.css" /> -->
+<!-- <link rel="stylesheet" type="text/css" href="../css/login.css" /> -->
+<!-- <link rel="stylesheet" type="text/css" href="../css/style.css" /> -->
 <link rel="stylesheet" type="text/css" href="../css/modal.css" />
 
 </head>
@@ -72,7 +72,7 @@
 						<table class="table" id="totalDistance" style="height: 403px">
 							<thead>
 								<tr>
-									<th colspan="4"><b>총 통행 거리</b></th>
+									<th colspan="4" style="background-color: #e6e6ff;"><b>총 통행 거리</b></th>
 								</tr>
 								<tr>
 									<th>평가 대상</th>

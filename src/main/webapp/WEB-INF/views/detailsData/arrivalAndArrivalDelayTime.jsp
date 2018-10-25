@@ -14,7 +14,7 @@
 	<script type="text/javascript" src="../js/jquery-1.7.1.min.js"></script>
 	<script type="text/javascript" src="../js/jquery-3.3.1.js"></script>
 	<script type="text/javascript" src="../js/jquery-ui-1.9.2.custom.min.js"></script>
-	<script type="text/javascript" src="../js/style.js"></script>
+<!-- 	<script type="text/javascript" src="../js/style.js"></script> -->
 	<script type="text/javascript"
 		src="../js/jquery.mCustomScrollbar.concat.min.js"></script>
 	<script type="text/javascript" src="../js/placeholder.js"></script>
@@ -33,12 +33,12 @@
 	
 	<!-- CSS -->
 	<link rel="stylesheet" type="text/css" href="../css/import.css" />
-	<link rel="stylesheet" type="text/css" href="../css/board.css" />
-	<link rel="stylesheet" type="text/css" href="../css/common.css" />
-	<link rel="stylesheet" type="text/css" href="../css/default.css" />
-	<link rel="stylesheet" type="text/css" href="../css/layout.css" />
-	<link rel="stylesheet" type="text/css" href="../css/login.css" />
-	<link rel="stylesheet" type="text/css" href="../css/style.css" />
+<!-- 	<link rel="stylesheet" type="text/css" href="../css/board.css" /> -->
+<!-- 	<link rel="stylesheet" type="text/css" href="../css/common.css" /> -->
+<!-- 	<link rel="stylesheet" type="text/css" href="../css/default.css" /> -->
+<!-- 	<link rel="stylesheet" type="text/css" href="../css/layout.css" /> -->
+<!-- 	<link rel="stylesheet" type="text/css" href="../css/login.css" /> -->
+<!-- 	<link rel="stylesheet" type="text/css" href="../css/style.css" /> -->
 	<link rel="stylesheet" type="text/css" href="../css/modal.css" />
     
 </head>
