@@ -6,8 +6,7 @@
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport"
-	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"
-	, target-densitydpi=device-dpi />
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
 	
 	<title>BMT ID 기준 특이사항</title>
 	
@@ -30,7 +29,7 @@
 <!-- 	<link rel="stylesheet" type="text/css" href="../css/layout.css" /> -->
 <!-- 	<link rel="stylesheet" type="text/css" href="../css/login.css" /> -->
 <!-- 	<link rel="stylesheet" type="text/css" href="../css/style.css" /> -->
-<!-- 	<link rel="stylesheet" type="text/css" href="../css/modal.css" /> -->
+	<link rel="stylesheet" type="text/css" href="../css/modal.css" />
 	<link rel="stylesheet" type="text/css" href="../css/imageModal.css" />
 	
 </head>
