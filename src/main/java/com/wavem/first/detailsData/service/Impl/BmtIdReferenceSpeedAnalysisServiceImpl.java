@@ -23,24 +23,13 @@ public class BmtIdReferenceSpeedAnalysisServiceImpl implements BmtIdReferenceSpe
 	}
 
 	@Override
-	public Map<String, Object> getBmtIdListDetail(Map<String, Object> map) {
-		Map<String, Object> resultMap = new HashMap<String, Object>();		
-		// table data 
-		List<Map<String, Object>> analysisList = bmtIdReferenceSpeedAnalysisDao.getAnalysisList(map);
-		// userList ( group by bmtid, userid user 구분을 위한 group by )  
-		List<Map<String, Object>> userList = bmtIdReferenceSpeedAnalysisDao.getUserList(map);
-		
-		// gpsList
-		List<List<Map<String, Object>>> speedDataList = new ArrayList<List<Map<String, Object>>>();
-		for(int i = 0; i < userList.size(); i++) {
-			speedDataList.add(bmtIdReferenceSpeedAnalysisDao.getSpeedList(userList.get(i)));
-		}
-		
-		resultMap.put("analysisList", analysisList);
-		resultMap.put("userList", userList);
-		resultMap.put("speedDataList", speedDataList);
-		
-		return resultMap;
+	public List<Map<String, Object>> getTimeList(Map<String, Object> map) {
+		return bmtIdReferenceSpeedAnalysisDao.getTimeList(map);
+	}
+
+	@Override
+	public List<Map<String, Object>> getGraph(Map<String, Object> map) {
+		return bmtIdReferenceSpeedAnalysisDao.getGraph(map);
 	}
 
 }

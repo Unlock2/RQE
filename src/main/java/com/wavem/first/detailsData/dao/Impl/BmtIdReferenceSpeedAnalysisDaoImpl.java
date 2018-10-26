@@ -24,19 +24,14 @@ public class BmtIdReferenceSpeedAnalysisDaoImpl implements BmtIdReferenceSpeedAn
 	}
 
 	@Override
-	public List<Map<String, Object>> getAnalysisList(Map<String, Object> map) {
-		return sqlSessionTemplate.selectList("bmtIdReferenceSpeedAnalysis.getAnalysisList", map);
+	public List<Map<String, Object>> getTimeList(Map<String, Object> map) {
+		return sqlSessionTemplate.selectList("bmtIdReferenceSpeedAnalysis.getTimeList", map);
 	}
 
 	@Override
-	public List<Map<String, Object>> getUserList(Map<String, Object> map) {
-		return sqlSessionTemplate.selectList("bmtIdReferenceSpeedAnalysis.getUserList", map);
+	public List<Map<String, Object>> getGraph(Map<String, Object> map) {
+		return sqlSessionTemplate.selectList("bmtIdReferenceSpeedAnalysis.selectGraph", map);
 	}
 
-	// 스피드 리스트로 명칭 변경
-	@Override
-	public List<Map<String, Object>> getSpeedList(Map<String, Object> map) {
-		return sqlSessionTemplate.selectList("bmtIdReferenceSpeedAnalysis.getSpeedList", map);
-	}
 
 }
