@@ -29,12 +29,12 @@ public class EachEvaluationSectionCurrentSituationController {
 	public ModelAndView getEachEvaluationSectionCurrentSituation(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
 		ModelAndView mav = new ModelAndView();
 		//session check
-		if (session.getAttribute("SS_USER_ID").toString().isEmpty()
-				|| session.getAttribute("SS_CP").toString().isEmpty()
-				|| session.getAttribute("SS_CAR_INFO").toString().isEmpty()
-				|| session.getAttribute("SS_AUCODE").toString().isEmpty()) {
-			mav.setViewName("redirect:/");
-		}
+				if (session.getAttribute("SS_USER_ID") == null
+						|| session.getAttribute("SS_CP") == null
+						|| session.getAttribute("SS_CAR_INFO") == null
+						|| session.getAttribute("SS_AUCODE") == null) {
+					mav.setViewName("redirect:/");
+				}
 		String userid = session.getAttribute("SS_USER_ID").toString();
 		Map<String, Object> input = new HashMap<String, Object>();
 		input.put("userid", userid);

@@ -180,8 +180,17 @@
 		
 		var tableHtml = '';
 		
-		centerLon = (parseFloat(positions[0].lon) + parseFloat(positions[1].lon))/2;
-		centerLat = (parseFloat(positions[0].lat) + parseFloat(positions[1].lat))/2;
+// 		centerLon = (parseFloat(positions[0].lon) + parseFloat(positions[1].lon))/2;
+// 		centerLat = (parseFloat(positions[0].lat) + parseFloat(positions[1].lat))/2;
+// 		for(var i = 0; i < positions.length; i++) {
+// 			centerLon += parseFloat(positions[0].lon);
+// 			centerLat += parseFloat(positions[0].lat);
+// 			if(i == positions.length - 1) {
+// 				centerLon = centerLon / positions.length;
+// 				centerLat = centerLat / positions.length;
+// 			}
+// 		}
+
 		// CP 명이 나오는 Overlay 를 삭제
 		if(customOverlayList.length != 0) {
 			for(var i = 0; i < customOverlayList.length; i++) {
@@ -235,6 +244,14 @@
 			tableHtml += '<td>' + positions[i].userid + '</td>';
 			tableHtml += '<td>' + positions[i].carinfo + '</td>';
 			tableHtml += '</tr>';
+			
+			// center 좌표 잡는 부분
+			centerLon += parseFloat(positions[0].lon);
+			centerLat += parseFloat(positions[0].lat);
+			if(i == positions.length - 1) {
+				centerLon = centerLon / positions.length;
+				centerLat = centerLat / positions.length;
+			}
 			
 		}	
 		$("#cpName > tbody").html(tableHtml);

@@ -52,90 +52,311 @@
 		by 		bmtid
 	</select>
 	
-	
-	<select id="selectGraph" parameterType="hashmap" resultType="hashmap">
-		select	s_tm
-		, 		cp_count
+	<select id="getCpList" parameterType="hashmap" resultType="hashmap">
+		select	bmtid
+		, 		userid
+		, 		user_no
 		, 		cp
-		, 		carinfo
-		, 		speed
 		from	(
-					select	*
-					from 	standard_tm
-					where 	hh = #{gpstm} -- 시간대
-				) a 
-		left outer join
-				(
-					select	bmtid
-					, 		cp_count
-					, 		c.cp
-					, 		c.carinfo
-					, 		gpstm
-					, 		speed
-					, 		to_char(to_timestamp(gpstm, 'yyyy-mm-dd hh24:mi:ss'),'hh24:mi:ss') as hhmmss
-					from	(
-								select	*
-								from 	gps_info
-								where	userid 
-								in 		(
-											select	userid
-											from 	admin_user_list
-											where 	adminid 
-											in 		(
-														select	adminid
-														from 	admin_user_list
-														where 	adminid = #{userid}
-														or 		userid = #{userid}
-													)
+					SELECT	a.userid
+					,		a.bmtid
+					,		gpstm
+					,		speed
+					,		cp
+					,		dense_rank() over(order by a.userid) user_no
+					from 	gps_info a
+					, 		bmt_total_info b
+					where 	a.userid 
+					IN 		(
+								SELECT	userid 
+								FROM 	admin_user_list 
+								WHERE 	adminid 
+								IN 		(
+											SELECT	adminid  
+											FROM 	admin_user_list 
+											WHERE 	adminid = #{userid} 
+											or 		userid = #{userid}
 										)
-								and 	to_date(substr(bmtid, 1, 6), 'yymmdd') 
-								between to_date(#{start_date}, 'yyyy-mm-dd') 
-								and 	to_date(#{end_date}, 'yyyy-mm-dd')
-								and 	substr(bmtid, 8,2) not in ('00', '99')
-								and 	bmtid = #{bmtid}
-								and 	to_char(to_timestamp(gpstm,'yyyy-mm-dd hh24:mi:ss'),'hh24') = #{gpstm} -- 시간대
-							) a,
-							(
-								select	count(*) as cp_count
-								from	(
-											select	userid
-											from 	gps_info
-											where 	userid 
-											in 		(
-														select	userid
-														from 	admin_user_list
-														where 	adminid 
-														in 		(
-																	select	adminid
-																	from 	admin_user_list
-																	where 	adminid = #{userid}
-																	or 		userid = #{userid}
-																)
-													)
-											and 	to_date(substr(bmtid, 1, 6), 'yymmdd') 
-											between to_date(#{start_date}, 'yyyy-mm-dd') 
-											and 	to_date(#{end_date}, 'yyyy-mm-dd')
-											and 	substr(bmtid, 8,2) not in ('00', '99')
-											and 	bmtid = #{bmtid}
-											and 	to_char(to_timestamp(gpstm,'yyyy-mm-dd hh24:mi:ss'),'hh24') = #{gpstm} -- 시간대
-											group by userid
-										) a
-							) b,
-							(
-								select	userid
-								, 		cp
-								, 		carinfo
-								from 	bmt_total_info
-								where 	bmtid = #{bmtid}
-							) c
-				where 	a.userid = c.userid
-				order by	cp
-				, 			gpstm
-			) b
-			on a.s_tm = b.hhmmss
-	
+							) -- 조건
+					and 	a.bmtid= b.bmtid
+					and		a.userid = b.userid
+					and 	a.bmtid = #{bmtid} -- 조건
+					and 	to_char(to_timestamp(gpstm, 'yyyy-mm-dd hh24:mi:ss'),'hh24') = #{gpstm} -- 조건
+				) a
+		group 	by bmtid
+		, 		userid
+		, 		user_no
+		, 		cp
 	</select>
 	
+	<select id="getGraph" parameterType="hashmap" resultType="hashmap">
+		select	#{bmtid} as bmtid,  -- 변수
+				s_tm as gpstm,
+				#{cp} as cp, -- 변수
+		case 	when speed is not null then speed else '0' end as speed
+		from	(
+					select	no
+					, 		to_char(to_timestamp(s_tm,'hh24:mi:ss'),'hh24:mi:ss') as s_tm
+					from 	standard_tm
+					where 	hh = #{gpstm} -- 조건
+				) a left outer join
+				(
+					SELECT	a.bmtid
+					,		to_char(to_timestamp(gpstm,'yyyy-mm-dd hh24:mi:ss'),'hh24:mi:ss') as gpstm
+					,		cp
+					,		speed
+					from 	gps_info a
+					, 		bmt_total_info b
+					where 	a.userid 
+					IN 		(
+								SELECT	userid 
+								FROM 	admin_user_list 
+								WHERE 	adminid 
+								IN 		(
+											SELECT	adminid  
+											FROM 	admin_user_list 
+											WHERE 	adminid = #{userid} 
+											or 		userid = #{userid}
+										)
+							) -- 조건
+					and 	a.bmtid= b.bmtid
+					and 	a.userid = b.userid
+					and 	a.bmtid = #{bmtid} -- 조건
+					and 	to_char(to_timestamp(gpstm, 'yyyy-mm-dd hh24:mi:ss'),'hh24') = #{gpstm} -- 조건
+					and 	cp = #{cp} -- 조건
+				) b
+		on a. s_tm = b.gpstm
+	</select>
 	
+	<select id="getGraphList" parameterType="hashmap" resultType="hashmap">
+	select	bmtid
+	,		gpstm
+	,		u1_nm
+	,		case 
+				when	u1_nm is not null then (case when u1_speed is null then '0' else u1_speed end ) else null end as u1_speed
+				,		u2_nm
+				,		case 
+							when u2_nm is not null 
+							then (case when u2_speed is null then '0' else u2_speed end ) else null 
+							end as u2_speed
+				,		u3_nm
+				,		case 
+							when u3_nm is not null 
+							then (case when u3_speed is null then '0' else u3_speed end ) else null 
+							end as u3_speed
+				,		u4_nm
+				,		case 
+							when u4_nm is not null 
+							then (case when u4_speed is null then '0' else u4_speed end ) else null 
+							end as u4_speed
+				,		u5_nm
+				,		case 
+							when u5_nm is not null 
+							then (case when u5_speed is null then '0' else u5_speed end ) else null 
+							end as u5_speed
+				,		u6_nm
+				,		case 
+							when u6_nm is not null 
+							then (case when u6_speed is null then '0' else u6_speed end ) else null 
+							end as u6_speed
+				,		u7_nm
+				,		case 
+							when u7_nm is not null 
+							then (case when u7_speed is null then '0' else u7_speed end ) else null 
+							end as u7_speed
+				,		u8_nm
+				,		case 
+							when u8_nm is not null 
+							then (case when u8_speed is null then '0' else u8_speed end ) else null 
+							end as u8_speed
+				,		u9_nm
+				,		case 
+							when u9_nm is not null 
+							then (case when u9_speed is null then '0' else u9_speed end ) else null 
+							end as u9_speed
+				,		u10_nm
+				,		case 
+							when u10_nm is not null 
+							then (case when u10_speed is null then '0' else u10_speed end ) else null 
+							end as u10_speed
+	from	(	
+				select	a.s_tm as gpstm
+				,		u1_speed
+				,		u2_speed
+				,		u3_speed
+				,		u4_speed
+				,		u5_speed
+				,		u6_speed
+				,		u7_speed
+				,		u8_speed
+				,		u9_speed
+				,		u10_speed
+				from	(
+							select	no
+							, 		to_char(to_timestamp(s_tm,'hh24:mi:ss'),'hh24:mi:ss') as s_tm
+							from 	standard_tm
+							where 	hh = #{gpstm} -- 조건
+						) a left outer join
+						(
+							SELECT	bmtid
+							,		to_char(to_timestamp(a.gpstm,'yyyy-mm-dd hh24:mi:ss'),'hh24:mi:ss') as gpstm
+							,		sum(u1_speed) as u1_speed
+							,		sum(u2_speed) as u2_speed
+							,		sum(u3_speed) as u3_speed
+							,		sum(u4_speed) as u4_speed
+							,		sum(u5_speed) as u5_speed
+							,		sum(u6_speed) as u6_speed
+							,		sum(u7_speed) as u7_speed
+							,		sum(u8_speed) as u8_speed
+							,		sum(u9_speed) as u9_speed
+							,		sum(u10_speed) as u10_speed
+							from	(
+										SELECT	userid
+										,		bmtid
+										,		gpstm
+										,		speed
+										,		to_number(case when dense_rank() over(order by userid) = 1 then speed else null end,'000') as u1_speed
+										,		to_number(case when dense_rank() over(order by userid) = 2 then speed else null end,'000') as u2_speed
+										,		to_number(case when dense_rank() over(order by userid) = 3 then speed else null end,'000') as u3_speed
+										,		to_number(case when dense_rank() over(order by userid) = 4 then speed else null end,'000') as u4_speed
+										,		to_number(case when dense_rank() over(order by userid) = 5 then speed else null end,'000') as u5_speed
+										,		to_number(case when dense_rank() over(order by userid) = 6 then speed else null end,'000') as u6_speed
+										,		to_number(case when dense_rank() over(order by userid) = 7 then speed else null end,'000') as u7_speed
+										,		to_number(case when dense_rank() over(order by userid) = 8 then speed else null end,'000') as u8_speed
+										,		to_number(case when dense_rank() over(order by userid) = 9 then speed else null end,'000') as u9_speed
+										,		to_number(case when dense_rank() over(order by userid) = 10 then speed else null end,'000') as u10_speed
+										from 	gps_info
+										where 	userid 
+										IN 		(
+													SELECT	userid 
+													FROM 	admin_user_list 
+													WHERE 	adminid 
+													IN 		(
+																SELECT	adminid  
+																FROM 	admin_user_list 
+																WHERE 	adminid = #{userid} or userid = #{userid}
+															)
+												) -- 조건
+										and 	bmtid = #{bmtid} -- 조건
+										and 	to_char(to_timestamp(gpstm, 'yyyy-mm-dd hh24:mi:ss'),'hh24') = #{gpstm} -- 조건
+										and 	bmtid
+										in 		(
+													select	bmtid
+													from	(
+																select	bmtid
+																, 		sum(total_count) as total_count
+																, 		sum(normal_count) as normal_count
+																from	(
+																			select	bmtid
+																			,		case 
+																						when cp is not null 
+																						then 1 else null 
+																						end as total_count
+																			,		case 
+																						when except_info = 'y' 
+																						and state_condition like '정상%' 
+																						then 1 else null 
+																						end as normal_count
+																			from 	bmt_total_info
+																		) a
+																group by bmtid
+															) a
+													where 	total_count = normal_count
+												)
+										) a
+						group by bmtid, gpstm
+
+					) b
+			on a.s_tm = b.gpstm
+		) a,
+		(
+			select	bmtid
+			,		max(u1_nm) as u1_nm
+			,		max(u2_nm) as u2_nm
+			,		max(u3_nm) as u3_nm
+			,		max(u4_nm) as u4_nm
+			,		max(u5_nm) as u5_nm
+			,		max(u6_nm) as u6_nm
+			,		max(u7_nm) as u7_nm
+			,		max(u8_nm) as u8_nm
+			,		max(u9_nm) as u9_nm
+			,		max(u10_nm) as u10_nm
+			from	(
+						select	bmtid
+						, 		userid
+						, 		user_no
+						,		case 
+									when user_no = '1' 
+									then cp else null 
+									end as u1_nm
+						,		case 
+									when user_no = '2' 
+									then cp else null 
+									end as u2_nm
+						,		case 
+									when user_no = '3' 
+									then cp else null 
+									end as u3_nm
+						,		case 
+									when user_no = '4' 
+									then cp else null 
+									end as u4_nm
+						,		case 
+									when user_no = '5' 
+									then cp else null 
+									end as u5_nm
+						,		case 
+									when user_no = '6' 
+									then cp else null 
+									end as u6_nm
+						,		case 
+									when user_no = '7' 
+									then cp else null 
+									end as u7_nm
+						,		case 
+									when user_no = '8' 
+									then cp else null 
+									end as u8_nm
+						,		case 
+									when user_no = '9' 
+									then cp else null 
+									end as u9_nm
+						,		case 
+									when user_no = '10' 
+									then cp else null 
+									end as u10_nm
+						from	(
+									SELECT	a.userid
+									,		a.bmtid
+									,		gpstm
+									,		speed
+									,		cp
+									,		dense_rank() over(order by a.userid) user_no
+									from 	gps_info a
+									, 		bmt_total_info b
+									where 	a.userid 
+									IN 		(	
+												SELECT	userid 
+												FROM 	admin_user_list 
+												WHERE 	adminid 
+												IN 		(
+															SELECT	adminid  
+															FROM 	admin_user_list 
+															WHERE 	adminid = #{userid} or userid = #{userid}
+														)
+											) -- 조건
+									and 	a.bmtid= b.bmtid
+									and 	a.userid = b.userid
+									and 	a.bmtid = #{bmtid} -- 조건
+									and 	to_char(to_timestamp(gpstm, 'yyyy-mm-dd hh24:mi:ss'),'hh24') = #{gpstm} -- 조건
+								) a
+						group by bmtid, userid, user_no, cp
+				) a
+			group by bmtid
+			) b
+			order by gpstm
+	
+	
+	</select>
 	
 </mapper>

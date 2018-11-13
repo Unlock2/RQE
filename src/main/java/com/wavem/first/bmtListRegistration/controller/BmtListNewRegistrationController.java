@@ -25,17 +25,17 @@ public class BmtListNewRegistrationController {
 	
 	@RequestMapping(value = "/bmtListRegistration/bmtNewList", method=RequestMethod.GET)
 	public ModelAndView bmtNewList(HttpSession session) {
-		ModelAndView mv = new ModelAndView("bmtListRegistration/bmtListNewRegistration");
+		ModelAndView mav = new ModelAndView("bmtListRegistration/bmtListNewRegistration");
 		//session check
-		if (session.getAttribute("SS_USER_ID").toString().isEmpty()
-				|| session.getAttribute("SS_CP").toString().isEmpty()
-				|| session.getAttribute("SS_CAR_INFO").toString().isEmpty()
-				|| session.getAttribute("SS_AUCODE").toString().isEmpty()) {
-			mv.setViewName("redirect:/");
-		}
-		mv.addObject("control", "bmtListRegistration");
-		mv.addObject("sub_control", "bmtListRegistration.bmtNewList");
-		return mv;
+				if (session.getAttribute("SS_USER_ID") == null
+						|| session.getAttribute("SS_CP") == null
+						|| session.getAttribute("SS_CAR_INFO") == null
+						|| session.getAttribute("SS_AUCODE") == null) {
+					mav.setViewName("redirect:/");
+				}
+		mav.addObject("control", "bmtListRegistration");
+		mav.addObject("sub_control", "bmtListRegistration.bmtNewList");
+		return mav;
 	}
 	
 	@ResponseBody

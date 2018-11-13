@@ -29,8 +29,4 @@ public class DataSheetDaoImpl implements DataSheetDao {
 		return sqlSessionTemplate.selectOne("datasheet.dataSheet_detail", input);
 	}
 
-//	public List<Map<String, Object>> getDownloadFile(Map<String, Object> input) {
-//		return sqlSessionTemplate.selectList("datasheet.getDownloadFile", input);
-//	}
-
 }

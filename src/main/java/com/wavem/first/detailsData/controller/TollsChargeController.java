@@ -31,10 +31,10 @@ public class TollsChargeController {
 		public ModelAndView getTollsCharge(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
 			ModelAndView mav = new ModelAndView();
 			//session check
-			if (session.getAttribute("SS_USER_ID").toString().isEmpty()
-					|| session.getAttribute("SS_CP").toString().isEmpty()
-					|| session.getAttribute("SS_CAR_INFO").toString().isEmpty()
-					|| session.getAttribute("SS_AUCODE").toString().isEmpty()) {
+			if (session.getAttribute("SS_USER_ID") == null
+					|| session.getAttribute("SS_CP") == null
+					|| session.getAttribute("SS_CAR_INFO") == null
+					|| session.getAttribute("SS_AUCODE") == null) {
 				mav.setViewName("redirect:/");
 			}
 			mav.addObject("control", "detailsData");

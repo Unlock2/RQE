@@ -1,168 +1,176 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<!DOCTYPE html><html>
+	pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
-	
-	<title>BMT ID 기준 속도 분석</title>
-	
-	<script type="text/javascript" src="../js/jquery-1.7.1.min.js"></script>
-	<script type="text/javascript" src="../js/jquery-3.3.1.js"></script>
-	<script type="text/javascript" src="../js/jquery-ui-1.9.2.custom.min.js"></script>
+
+<title>BMT ID 기준 속도 분석</title>
+
+<script type="text/javascript" src="../js/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="../js/jquery-3.3.1.js"></script>
+<script type="text/javascript" src="../js/jquery-ui-1.9.2.custom.min.js"></script>
 <!-- 	<script type="text/javascript" src="../js/style.js"></script> -->
-	<script type="text/javascript"
-		src="../js/jquery.mCustomScrollbar.concat.min.js"></script>
-	<script type="text/javascript" src="../js/placeholder.js"></script>
-	<script type="text/javascript" src="../js/ui.js"></script>
-	<script type="text/javascript" src="../js/style.js"></script>
-    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=fbd114108f63ae7f837dbe2cee10a1ba"></script>
-    
-    <!-- Google Chart -->
-	<script type="text/javascript"
-		src="https://www.gstatic.com/charts/loader.js"></script>
-	
-	<!-- chart.js -->
-	<script
-		src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
-	<script
-		src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js"></script>
-    
-   	<!-- CSS -->
-	<link rel="stylesheet" type="text/css" href="../css/import.css" />
+<script type="text/javascript"
+	src="../js/jquery.mCustomScrollbar.concat.min.js"></script>
+<script type="text/javascript" src="../js/placeholder.js"></script>
+<script type="text/javascript" src="../js/ui.js"></script>
+<script type="text/javascript" src="../js/style.js"></script>
+<script type="text/javascript"
+	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=fbd114108f63ae7f837dbe2cee10a1ba"></script>
+
+<!-- Google Chart -->
+<script type="text/javascript"
+	src="https://www.gstatic.com/charts/loader.js"></script>
+
+<!-- chart.js -->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js"></script>
+
+<!-- CSS -->
+<link rel="stylesheet" type="text/css" href="../css/import.css" />
 <!-- 	<link rel="stylesheet" type="text/css" href="../css/board.css" /> -->
 <!-- 	<link rel="stylesheet" type="text/css" href="../css/common.css" /> -->
 <!-- 	<link rel="stylesheet" type="text/css" href="../css/default.css" /> -->
 <!-- 	<link rel="stylesheet" type="text/css" href="../css/layout.css" /> -->
 <!-- 	<link rel="stylesheet" type="text/css" href="../css/login.css" /> -->
 <!-- 	<link rel="stylesheet" type="text/css" href="../css/style.css" /> -->
-	<link rel="stylesheet" type="text/css" href="../css/modal.css" />
-    
-    <style>
-    	#cpResultTableDiv table thead tr th,
-    	#cpResultTableDiv table tbody tr td,
-    	#analysisTableDiv table thead tr th,
-    	#analysisTableDiv table tbody tr th,
-    	#analysisTableDiv table tbody tr td
-    	{
-    		padding : 0;
-    	}
-    	#analysisTableDiv table thead tr th,
-    	#analysisTableDiv table tbody tr th{
-   		    width: 90px;
-    	}
-    
-    </style>
+<link rel="stylesheet" type="text/css" href="../css/modal.css" />
+
+<style>
+#cpResultTableDiv table thead tr th, #cpResultTableDiv table tbody tr td,
+	#analysisTableDiv table thead tr th, #analysisTableDiv table tbody tr th,
+	#analysisTableDiv table tbody tr td {
+	padding: 0;
+}
+
+#analysisTableDiv table thead tr th, #analysisTableDiv table tbody tr th
+	{
+	width: 90px;
+}
+</style>
 </head>
 <body>
 	<div id=wrap>
 		<!-- #header -->
-		<jsp:include page="/WEB-INF/views/layouts/header.jsp"/>
+		<jsp:include page="/WEB-INF/views/layouts/header.jsp" />
 		<!-- \#header -->
-			<!-- #snbArea -->
-			<jsp:include page="/WEB-INF/views/layouts/detailsData_subMenu.jsp"/>
-			<!-- \#snbArea -->
-			<section id="contents" style="width: 95%;">
-				<div class="tit-page">
-					<span>BMT ID 기준 속도 분석</span>
-					<ul class="path">
-						<li>상세 데이터</li>
-						<li>BMT ID 기준 속도 분석</li>
-					</ul>
-					<!-- .path -->
-				</div>
-				<!-- tit-page -->	
-					<!-- .contents -->
-	                <div class="contents" style="width:100%">
-	                	<!-- .search -->
-	                	<div class="search">
-	                        <form id="search-bmt">
-	                            <span class="pd">시작 날짜</span>
-	                            <input type="text" class="text date" id="bmt-start-date" name="bmt-start-date" />
-	                            <span class="pd">~</span>
-	                            <span class="pd">종료 날짜</span>
-	                            <input type="text" class="text date" id="bmt-end-date" name="bmt-end-date" />
-	                            <a href="javascript:bmtIdReferenceSpeedAnalysis()" class="btnSearch">
-	                                <img src="../images/board/btn_search.gif" alt="search" />
-	                            </a>
-	                        </form>
-	                    </div>
-	                	<!-- /.search -->
-	                	<div id="resultDiv">
-	                		<div id="resultListDiv" style="width: 15%; float: left;">
-	                			<table>
-	                				<thead>
-	                					<tr>
-	                						<th>BMT_ID</th>
-	                					</tr>
-	                				</thead>
-	                				<tbody>
-	                				</tbody>
-	                			</table>
-	                		</div>
-	                		<div style= "position: relative; width:85%; height:900px; z-index:1; float: right;">
-	                			<div id="cpResultTableDiv" style="width:100px; position: absolute; z-index: 2; left:1px">
-	                				<table id="tbl-time-list" style="border:3px dashed; background:white; width:100px;">
-	                					<thead>
-	                						<tr>
-		                						<th style="width:100px">시간</th>
-<!-- 		                						<th style="width:75px">구분</th> -->
-	                						</tr>
-	                					</thead>
-	                					<tbody>
-	                					</tbody>
-	                				</table>
-	                			</div>
-<!-- 	                			<div id="analysisTableDiv" style="width: 75%; float: right; position: absolute; z-index: 2; left: 50px; width:1135px"> -->
-<!-- 	                				<table style="border:3px dashed; background:white; position:absolute; z-index:2; left:170px"> -->
-<!-- 		                				<thead></thead> -->
-<!-- 		                				<tbody></tbody> -->
-<!-- 	                				</table> -->
-<!-- 	                			</div> -->
-<!-- 	                			<div id="bmtIdReferenceSpeedAnalysisDiv" style= "position: relative; height:700px; z-index:1; margin-top: 228px;"> -->
-	                			
-<!-- 	                			</div> -->
-								<div class="content">
-						<!-- Chart Area Start-->
-						<div
-							style="display: inline-block; vertical-align: top; width: 92%; margin-left: 112px;">
-<!-- 							<div> -->
-<!-- 								<b>거리 기준 속도 분석</b> -->
-<!-- 							</div> -->
-<!-- 							<canvas id="distanceSpeedSpecificityChart" -->
-<!-- 								style="display: block; width: 719px; width:1125px; height: 400px;"></canvas> -->
-<!-- 						</div> -->
-						<div
-							style="display: inline-block; vertical-align: top; width: 83%;">
-							<div>
-								<b>시간 기준 속도 분석(종합)</b>
-							</div>
-							<canvas id="timeSpeedSpecificityChart"></canvas>
-						</div>
-						<!-- Chart Area End-->
+		<!-- #snbArea -->
+		<jsp:include page="/WEB-INF/views/layouts/detailsData_subMenu.jsp" />
+		<!-- \#snbArea -->
+		<section id="contents" style="width: 95%;">
+			<div class="tit-page">
+				<span>BMT ID 기준 속도 분석</span>
+				<ul class="path">
+					<li>상세 데이터</li>
+					<li>BMT ID 기준 속도 분석</li>
+				</ul>
+				<!-- .path -->
+			</div>
+			<!-- tit-page -->
+			<!-- .contents -->
+			<div class="contents" style="width: 100%">
+				<!-- .search -->
+<!-- 				<div class="search"> -->
+<!-- 					<form id="search-bmt"> -->
+<!-- 						<span class="pd">시작 날짜</span> <input type="text" class="text date" -->
+<!-- 							id="bmt-start-date" name="bmt-start-date" /> <span class="pd">~</span> -->
+<!-- 						<span class="pd">종료 날짜</span> <input type="text" class="text date" -->
+<!-- 							id="bmt-end-date" name="bmt-end-date" /> <a -->
+<!-- 							href="javascript:bmtIdReferenceSpeedAnalysis()" class="btnSearch"> -->
+<!-- 							<img src="../images/board/btn_search.gif" alt="search" /> -->
+<!-- 						</a> -->
+<!-- 					</form> -->
+				<jsp:include page="/WEB-INF/views/layouts/checkbox.jsp"/>
+<!-- 				</div> -->
+				<!-- /.search -->
+				<div id="resultDiv">
+					<div id="resultListDiv" style="width: 15%; float: left;">
+						<table>
+							<thead>
+								<tr>
+									<th>BMT_ID</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
 					</div>
+					<div
+						style="position: relative; width: 85%; height: 900px; z-index: 1; float: right;">
+						<div id="cpResultTableDiv"
+							style="width: 100px; position: absolute; z-index: 2; left: 1px">
+							<table id="tbl-time-list"
+								style="border: 3px dashed; background: white; width: 100px;">
+								<thead>
+									<tr>
+										<th style="width: 100px; height:34px;">시간</th>
+										<!-- 		                						<th style="width:75px">구분</th> -->
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</div>
+						<div id="div-cpList" style="width:100px;position: absolute;left: 120px"></div>
+						<!-- 	                			<div id="analysisTableDiv" style="width: 75%; float: right; position: absolute; z-index: 2; left: 50px; width:1135px"> -->
+						<!-- 	                				<table style="border:3px dashed; background:white; position:absolute; z-index:2; left:170px"> -->
+						<!-- 		                				<thead></thead> -->
+						<!-- 		                				<tbody></tbody> -->
+						<!-- 	                				</table> -->
+						<!-- 	                			</div> -->
+						<!-- 	                			<div id="bmtIdReferenceSpeedAnalysisDiv" style= "position: relative; height:700px; z-index:1; margin-top: 228px;"> -->
 
-	                		</div>
-	                	
-	                	</div>
-	               	</div>
-	               	<!-- /.contents -->
-			 </section>
+						<!-- 	                			</div> -->
+						<div class="content">
+							<!-- Chart Area Start-->
+							<div style="vertical-align: top; width: 92%; margin-left: 230px;">
+								<!-- 							<div> -->
+								<!-- 								<b>거리 기준 속도 분석</b> -->
+								<!-- 							</div> -->
+								<!-- 							<canvas id="distanceSpeedSpecificityChart" -->
+								<!-- 								style="display: block; width: 719px; width:1125px; height: 400px;"></canvas> -->
+								<!-- 						</div> -->
+								<div
+									id="div-graph" style="display: inline-block; vertical-align: top; width: 83%;">
+									<div>
+										<b>시간 기준 속도 분석(종합)</b>
+									</div>
+									<canvas id="timeSpeedSpecificityChart"></canvas>
+								</div>
+								<!-- Chart Area End-->
+							</div>
+
+						</div>
+
+					</div>
+				</div>
+			</div>
 				<!-- /.contents -->
+		</section>
+		<!-- /.contents -->
 		</section>
 		<!--  #container -->
 		<footer>
 			<p class="copyright">Copyright ⓒ 2018. WaveM Co. All rights
-					reserved.</p>
-		</footer>             
+				reserved.</p>
+		</footer>
 	</div>
-<!-- .wrap -->
+	<!-- .wrap -->
 </body>
 <script>
 $(document).ready(function() {
+	
+	$('.btnSearch').attr('href', 'javascript:bmtIdReferenceSpeedAnalysis()');
+	//기본날짜 set
 	setDate();
+	
+	//검색된 값이 없는 경우
 	notFoundResult();
 
 });//document.ready
@@ -172,11 +180,8 @@ $(document).ready(function() {
  * 검색된 값이 없는 경우
  */
 notFoundResult = function() {
-	$('#tbl-specific-list').children('tbody').append('<tr><td colspan="3">검색된 값이 없습니다</tr>');
-	$('#tbl-specific-info').children('tbody').append('<tr><td colspan="5">검색된 값이 없습니다</tr>');
-	$('#tbl-specific-etc1').text('검색된 값이 없습니다');
-	$('#tbl-specific-etc2').text('검색된 값이 없습니다');
-	$('#tbl-specific-etc3').text('검색된 값이 없습니다');
+	$('#resultListDiv > table').children('tbody').append('<tr><td>검색된 값이 없습니다</tr>');
+	$('#tbl-time-list').children('tbody').append('<tr><td>검색된 값이<br> 없습니다</tr>');
 };
 
 //<![CDATA[
@@ -244,24 +249,53 @@ setDate = function() {
 	modalCal.val(year + '-' + month + '-' + day);
 }; 
 
+//검색 날짜 담는 변수
+var start_date;
+var end_date;
+
 /** 
- *	데이터 조회
+ *	bmtid 조회
  */
 bmtIdReferenceSpeedAnalysis = function() {
-	var list1 = $('#tbl-specific-list').children('tbody');
-	var list2 = $('#tbl-specific-info').children('tbody');
-	var image = $('#specific-image');
 	
-	//날짜 입력값이 없으면 return false;
+	$('#resultListDiv > table > tbody > tr').empty();
+	$('#tbl-time-list > tbody > tr').empty();
+	
+	//시간대 특성 체크된 개수 확인
+	var count_time = $('.timecheck input:checked').length;
+	if (count_time < 1) {
+		alert('시간대특성 및 거리특성을 1개 이상 선택해 주시기바랍니다.');
+		return false;
+	}
+	
+	//거리 특성 체크된 개수 확인
+	var count_distance = $('.distance input:checked').length;
+	if (count_distance < 1) {
+		alert('거리특성을 1개 이상 선택해 주시기바랍니다.');
+		return false;
+	}
+	
+	//시작날짜 종료날짜 입력 확인
+// 	var start = $('#bmt-start-date').val();
+// 	var end = $('#bmt-end-date').val();
+// 	if (start == null || start == '' || end == null || end == '') {
+// 		return false;
+// 	}
+	
+// 	//날짜 입력값이 없으면 return false;
 	var start = $('#bmt-start-date').val();
+	start_date = start;
 	var end = $('#bmt-end-date').val();
+	end_date = end;
 	if (start == null || start == '' || end == null || end == '') {
 		alert('날짜입력 확인해주세요');
 		return false;
 	}
-	
-	//그래프 초기화
-	$("#resultListDiv > table > tbody").empty();
+// 종료날짜가 시작날짜 보다 큰 경우 alert창 띄우고 false로 return 조건문
+	if (parseInt(end.replace(/-/g,'')) < parseInt(start.replace(/-/g,''))){
+		alert('종료 날짜는 시작 날짜 보다 작을 수 없습니다.')
+		return false;
+	}
 	
 	//method 
 	$.ajax({
@@ -271,14 +305,29 @@ bmtIdReferenceSpeedAnalysis = function() {
 		data : $('#search-bmt').serializeObject(),
 		processData : true, /*querySTring make false*/
 		success : function(data, stat, xhr) {
-			var resultListHtml = '';
-			for (var i = 0; i < data.list.length; i++) {
-				resultListHtml += '<tr onclick="selectBmtId(\''
-						+ data.list[i].bmtid + '\')">';
-				resultListHtml += '<td>' + data.list[i].bmtid + '</td>';
-				resultListHtml += '</tr>';
+			//cansvas 초기화
+			clearChart();
+			
+			//button 초기화
+			$('#div-cpList').empty();
+			
+			//bmtid 초기화
+			$("#resultListDiv > table > tbody").empty();
+			
+			if (data.list.length != 0) {
+				var resultListHtml = '';
+				for (var i = 0; i < data.list.length; i++) {
+					resultListHtml += '<tr style="height:34px;" onclick="getTimeList(\''
+							+ data.list[i].bmtid + '\')">';
+					resultListHtml += '<td>' + data.list[i].bmtid + '</td>';
+					resultListHtml += '</tr>';
+				}
+				$("#resultListDiv > table > tbody").html(resultListHtml);
+			} else {
+				//검색된 값이 없는 경우
+				notFoundResult();
 			}
-			$("#resultListDiv > table > tbody").html(resultListHtml);
+			
 		},
 		error : function(xhr, stat, err) {
 			alert("error");
@@ -287,48 +336,56 @@ bmtIdReferenceSpeedAnalysis = function() {
 	});
 }
 
-//bmt_id 클릭시 해당 아이디의 시간데이터를 가지고오는 function 	
-selectBmtId = function(selectId) {
+/**
+ * bmt_id 클릭 시 시간 data 검색
+ */
+ getTimeList = function(selectId) {
 	var list = $('#resultTimeDiv');
 	
 	//날짜 입력값이 없으면 return false;
-	var start = $('#bmt-start-date').val();
-	var end = $('#bmt-end-date').val();
-	if (start == null || start == '' || end == null || end == '') {
+	if (start_date == null || start_date == '' || end_date == null || end_date == '') {
 		alert('날짜입력 확인해주세요');
 		return false;
 	}
-	
-	//그래프 초기화
-	$("#resultTimeDiv > table > tbody").empty();
 
 	$.ajax({
 		url : '/detailsData/getTimeList',
 		type : 'post',
 		dataType : 'json',
-		data : { start_date : start,
-			     end_date : end,
+		data : { start_date : start_date,
+			     end_date : end_date,
 			     bmtid : selectId
 				},
 		processData : true,
 		success : function(data, stat, xhr) {
-			var resultListHtml = '';
-			var st = parseInt(data.list[0].min_gpstm);
-			var ed = data.list[0].max_gpstm;
-			var bmtid = '' + data.list[0].bmtid.toString() + '';
-			console.log(bmtid);
-			for (var i = st; i <= ed; i++) {
-				resultListHtml += '<tr onclick="selectGraph(' + i + ', \''  + bmtid + '\')">';
-				resultListHtml += '<td>';
-				if ( i < 10) {
-					resultListHtml += '0' + i;
-				} else {
-					resultListHtml += i;	
-				} 
-				resultListHtml += '</td>';
-				resultListHtml += '<tr>';
+			//cansvas 초기화
+			clearChart();
+			
+			//button 초기화
+			$('#div-cpList').empty();
+			
+			if (data.list.length != 0) {
+				var resultListHtml = '';
+				var st = parseInt(data.list[0].min_gpstm);
+				var ed = data.list[0].max_gpstm;
+				var bmtid = '' + data.list[0].bmtid.toString() + '';
+				console.log(bmtid);
+				for (var i = st; i <= ed; i++) {
+					resultListHtml += '<tr>';
+					resultListHtml += '<td style="height:34px;" onclick="getCpList(this, \''  + bmtid + '\')">';
+					if ( i < 10) {
+						resultListHtml += '0' + i;
+					} else {
+						resultListHtml += i;	
+					} 
+					resultListHtml += '</td>';
+					resultListHtml += '<tr>';
+				}
+				$("#tbl-time-list > tbody").html(resultListHtml);
+			} else {
+				$("#tbl-time-list > tbody").text('No data');
 			}
-			$("#tbl-time-list > tbody").html(resultListHtml);
+			
 		},
 		error : function(xhr, stat, err) {
 			alert("error");
@@ -337,33 +394,108 @@ selectBmtId = function(selectId) {
 	});
 }
 
-//그래프 data 가져오기
-selectGraph = function(hh, bmtid) {
-	var list = $('#timeSpeedSpecificityChart');
-	
-	//날짜 입력값이 없으면 return false;
-	var start = $('#bmt-start-date').val();
-	var end = $('#bmt-end-date').val();
-	if (start == null || start == '' || end == null || end == '') {
-		alert('날짜입력 확인해주세요');
-		return false;
+//chart 초기화
+clearChart = function() {
+	var canvasChart = document.getElementById('timeSpeedSpecificityChart');
+	if(canvasChart != undefined) {
+ 		canvasChart.remove();
+ 		console.log("canvasChart >>> " + canvasChart);
+		//var ctx = canvasChart.getContext('2d');
+		//ctx.clearRect(0, 0, canvasChart.width, canvasChart.height);
+	} else {
+		canvasChart = document.createElement('canvas');
+		canvasChart.setAttribute('id', 'timeSpeedSpecificityChart');
+		document.getElementById('div-graph').appendChild(canvasChart);
+		console.log("canv >>> " + canvasChart);
 	}
+}
+
+/**
+ * time 클릭시 cp name button list 가져오기 function
+ */
+ getCpList = function(elmnt, bmtid) {
+	//button 그리는 위치
+	var buttonDiv = $('#div-cpList');
 	
-	$("#timeSpeedSpecificityChart").empty();
+	var hh = elmnt.innerText;
+	console.log("hh >>>>>> " + hh);
+	
+	//parameter 확인
+	console.log('hh, bmtid >>>>> ' + hh + ' ' + bmtid);
+	 $.ajax({
+		 url : '/detailsData/getCpList',
+			type : 'post',
+			dataType : 'json',
+			data : { 
+				     bmtid : bmtid,
+				     gpstm : hh
+					},
+			processData : true,
+			success : function(data, stat, xhr) {
+				//결과값 확인
+				console.log(data.result);
+				
+				//cansvas 초기화
+				clearChart();
+				
+				//button 초기화
+				$('#div-cpList').empty();
+				
+				var result = data.result;
+				if (result.length != 0) {
+					var resultListHtml = '';
+					//cp button 생성
+					for (var i = 0; i < result.length; i++) {
+						resultListHtml += '<button type="button" style="display: block;margin-bottom: 20px;cursor: pointer;" onclick="getGraph(this, \'' + hh + '\', \''  + bmtid + '\') " value="' + result[i].cp + '">'; 
+						resultListHtml += result[i].cp;
+						resultListHtml += '</button>';
+					}
+					buttonDiv.html(resultListHtml);	
+				} else {
+					$('#div-cpList').text('No cp data.');
+				}
+			},
+			error : function(xhr, stat, err) {
+				alert("error");
+				console.log(err);
+			}
+	 });
+}
+
+/**
+ * 그래프 data 가져오기
+ */
+getGraph = function(elmnt, hh, bmtid) {
+	
+	var cp = elmnt.value;
 	
 	$.ajax({
 		url : '/detailsData/getGraph',
 		type : 'post',
 		dataType : 'json',
-		data : { start_date : start,
-			     end_date : end,
-			     bmtid : bmtid,
-			     gpstm : hh
+		data : { bmtid : bmtid,
+			     gpstm : hh,
+			     cp : cp
 				},
 		processData : true,
 		success : function(data, stat, xhr) {
+			console.log(data.list);
+			/**
+			* canvas 초기화
+			* 기존 chart가 있을 시 remove canvas
+			* 없는 경우 create canvas
+			* button 클릭시 remove가 실행되므로
+			*/
+			clearChart();
+			
+			//canvas null check : null인 경우 canvas를 그려줘야 함 
+			var canvasChart = document.getElementById('timeSpeedSpecificityChart');
+			if(canvasChart == undefined) {
+				clearChart();
+			}
+			
 			//그래프 함수 호출
-			createGraph(data.list);
+			createGraph(cp, data.list);
 		},
 		error : function(xhr, stat, err) {
 			alert("error");
@@ -373,78 +505,86 @@ selectGraph = function(hh, bmtid) {
 }
 
 //그래프 그리는 함수 
-function createGraph(result) {
-
-	var ctx = document.getElementById("timeSpeedSpecificityChart");
-	var cp = [];
-	var speed = [];
-	var s_tm = [];
-
-	if (result.length != 0) {
-		for (var i = 0; i < result.length; i++) {
-			//cp name 중복제거
-			if (cp.includes(result[i].cp)) {
-				return;
-			} else {
-				cp.push(result[i].cp);
-			}
-			
-			speed.push(result[i].speed);
-			s_tm.push(result[i].s_tm);
-		}
+function createGraph(cp, result) {
+	
+	//차트 그리는 위치
+	var speedCanvas = document.getElementById('timeSpeedSpecificityChart');
+	
+	//1.좌표  : graph data set
+	var Coordinates = [];
+	for (var c = 0; c < result.length; c++) {
+		Coordinates.push({x : c, y : result[c].speed});
 	}
-
-	var speedChart = new Chart(ctx, {
-		type : 'line',
-		data : {
-			labels : cp,
-			datasets : [ {
-				label : '속도',
-				data : speed,
-				borderColor : 'rgba(255, 0, 0, 1)',
-				backgroundColor : 'transparent'
-			},{
-				label : '시간',
-				data : s_tm,
-				borderColor : 'rgba(0, 125, 0, 1)',
-				backgroundColor : 'transparent'
-			}]
-		},
-		options : {
-			elements : {
-				line : {
-					tension : 0
-				}
-			},
-			legend : {
-				display : true,
-				position : 'bottom'
-			}
-		}
-	});
-}
-
-function getColor(userList, colorList) {
-	var co = [ '#FF0000', '#0000FF', '#FFFF00', '#00FF00', '#FFA500',
-			'#BA55D3', '#8B4513', '#C0C0C0', '#EE82EE', '#00BFFF' ];
-	var cnt = userList.length;
-	if (cnt <= 10) {
-		for (var i = 0; i < cnt; i++) {
-			colorList.push(co[i]);
-		}
-		;
-	} else {
-		for (var i = 0; i < 10; i++) {
-			colorList.push(co[i]);
-		}
-		;
-		for (var i = 10; i < cnt; i++) {
-			// getRandomColor()은 common.js 안에 있습니다.
-			colorList.push(getRandomColor());
-		}
-		;
+	
+	//2.x축 : 시간
+	var time = [];
+	for (var i = 0; i < 3601; i++) {
+		time.push(i);
 	}
-};
+	
+	//3.chart option 설정
+	var chartOptions = {
+		    legend: {
+		    display: true,
+		    position: 'top',
+		    labels: {
+		      boxWidth: 80,
+		      fontColor: 'black'
+		    }
+		  },
+		  scales: {
+		    xAxes: [{
+		      gridLines: {
+		        display: false,
+		        color: "black"
+		      },
+		      scaleLabel: {
+		        display: true,
+		        labelString: "시간(s)",
+		        fontColor: "black"
+		      }
+		    }],
+		    yAxes: [{
+		      gridLines: {
+		        color: "black",
+		        borderDash: [2, 5],
+		      },
+		      scaleLabel: {
+		        display: true,
+		        labelString: "속도(km/h)",
+		        fontColor: "black"
+		      }
+		    }]
+		    }
+		};
+	
+	//4.data set
+	var speedData = {
+			labels : time,
+			datasets : [{
+				label : cp,
+				data : Coordinates,
+				lineTension: 0,
+			    fill: false,
+			    borderColor: 'black',
+			    backgroundColor: 'transparent',
+			    pointBorderColor: 'blue',
+			    pointRadius: 5,
+			    pointHoverRadius: 10,
+			    pointHitRadius: 30,
+			    pointBorderWidth: 1,
+			    pointStyle: 'rectRounded'
+			}],
+		}
+	
+	//5.line chart 그리기
+	var lineChart = new Chart(speedCanvas, {
+		  type: 'line',
+		  data: speedData,
+		  options: chartOptions
+		});
+	
+}//createGraph
 	
 /**
  * form data 직렬화 

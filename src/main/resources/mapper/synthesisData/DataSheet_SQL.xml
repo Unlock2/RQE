@@ -76,7 +76,7 @@
 		order by bmtid,	cp
 	</select>
 	
-	<select id="getDownloadFile" parameterType="hashmap"  resultType="hashmap">
+	<select id="downloadDataSheet" parameterType="hashmap"  resultType="hashmap">
 	SELECT  bmtid,
 		    userid,
 		    except_info,
@@ -104,7 +104,7 @@
 	      (
 	      select adminid
 	      from admin_user_list
-	      where userid = #{userid} or userid = #{userid}
+	      where adminid = #{userid} or userid = #{userid}
 	      )
 	   )
 	   AND to_date ( substr( bmtid, 1, 6 ), 'yymmdd' ) BETWEEN to_date (#{start_date},'yyyy-mm-dd')  and to_date(#{end_date},'yyyy-mm-dd')

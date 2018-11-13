@@ -1,7 +1,5 @@
 package com.wavem.first.detailsData.service.Impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,6 +25,11 @@ public class BmtIdReferenceSpeedAnalysisServiceImpl implements BmtIdReferenceSpe
 		return bmtIdReferenceSpeedAnalysisDao.getTimeList(map);
 	}
 
+	@Override
+	public List<Map<String, Object>> getCpList(Map<String, Object> map) {
+		return bmtIdReferenceSpeedAnalysisDao.getCpList(map);
+	}
+	
 	@Override
 	public List<Map<String, Object>> getGraph(Map<String, Object> map) {
 		return bmtIdReferenceSpeedAnalysisDao.getGraph(map);

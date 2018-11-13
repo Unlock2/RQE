@@ -158,6 +158,12 @@
 		if (start == null || start == '' || end == null || end == '') {
 			return false;
 		}
+		
+		// 종료날짜가 시작날짜 보다 큰 경우 alert창 띄우고 false로 return 조건문
+		if (parseInt(end.replace(/-/g,'')) < parseInt(start.replace(/-/g,''))){
+			alert('종료 날짜는 시작 날짜 보다 작을 수 없습니다.')
+			return false;
+		}
 
 		$.fn.serializeObject = function() {
 			var o = {};

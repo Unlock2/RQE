@@ -42,10 +42,6 @@ public class SystemController {
 				|| "".equals(session.getAttribute("SS_CAR_INFO"))
 				|| session.getAttribute("SS_AUCODE") == null
 				|| "".equals(session.getAttribute("SS_AUCODE"))) {
-//		if (session.getAttribute("SS_USER_ID").toString().isEmpty()
-//				|| session.getAttribute("SS_CP").toString().isEmpty()
-//				|| session.getAttribute("SS_CAR_INFO").toString().isEmpty()
-//				|| session.getAttribute("SS_AUCODE").toString().isEmpty()) {
 			mav.setViewName("redirect:/");
 		} else {
 			mav.addObject("control", "userManagement");

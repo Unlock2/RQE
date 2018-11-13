@@ -17,6 +17,8 @@
     <script type="text/javascript" src="../js/placeholder.js"></script>
 	<script type="text/javascript" src="../js/ui.js"></script>
 	<script type="text/javascript" src="../js/style.js"></script>
+	<script type="text/javascript" src="../js/jquery.techbytarun.excelexportjs.js"></script>
+	<script type="text/javascript" src="../js/jquery.techbytarun.excelexportjs.min.js"></script>
     
     <!-- CSS -->
     <link rel="stylesheet" type="text/css" href="../css/import.css" />
@@ -63,12 +65,11 @@
                                 <img src="../images/board/btn_search.gif" alt="search" />
                             </a>
 							<!-- 데이터 다운로드 -->
-                            <div style="float:right">
-	                            <button type="button" id="datasheetDownload" name="datasheetFileDownload" style="background-color:gray; color:white;">
-<!-- 	                             onClick="location.href='/synthesisData/getDownloadFile'"> -->
-	                            데이터 내려받기 	
-	                            </button>
-                            </div>
+<!--                             <div style="float:right"> -->
+<!-- 	                            <button type="button" id="downloadDataSheet" name="downloadDataSheet" style="background-color:gray; color:white;" onclick="getDataSheet()"> -->
+<!-- 	                            데이터 내려받기 	 -->
+<!-- 	                            </button> -->
+<!--                             </div> -->
                         </form>
                     </div>
                     <!-- /.search -->
@@ -145,8 +146,8 @@
 		</div>
 		<!-- \The Modal -->		
 		
-<!-- 		<div id="hidden" style="display:none;">	 -->
-<!-- 			<table id="datasheet_DownloadTable"> -->
+<!-- 		<div id="excelDownDiv"class="modal-body" style="display:none">	 style="display:none;" -->
+<!-- 			<table id="tbl-modal-data2"> -->
 <!-- 				<thead> -->
 <!-- 					<tr>	   -->
 <!-- 					  <th>BMT ID</th> -->
@@ -196,21 +197,12 @@
 		notFoundResult();
 		
 		/**
-		* data sheet list 값 불러오기
-		*/
-// 		dataSheetList();
-		
-		/**
-		* data sheet csv file 다운로드
-		*/
-// 		$("#datasheetDownload").on("click", function(){
-// 			e.preventDefault();
-// 			fn_downloadFile($(this));
-// 		});
 		
 		/**
 		* data sheet 상세보기
 		*/
+		
+		
 		$(document).on('click', '#tbl-data-sheet tbody tr', function() {
 			console.log('detail');
 			var id = $(this).attr('id').trim();
@@ -297,7 +289,8 @@
             }
         }
 		
-	});
+	});//document.ready
+	
 	//<![CDATA[
 	// date picker
 	$(".date").datepicker({
@@ -363,6 +356,79 @@
 		modalCal.val(year + '-' + month + '-' + day);
 	}; 
 
+	
+	
+	 function getDataSheet() {
+		$('#excelDownDiv').show();
+		var start = $('#bmt-start-date').val();
+		var end = $('#bmt-end-date').val();
+		var list = $('#tbl-modal-data2').children('tbody');
+		if(start == null || start == '' || end == null || end == ''){
+			return false;
+		}
+		var jsonStr = JSON.stringify($('#search-bmt').serialize());
+		
+		$.ajax({
+			url : '/synthesisData/downloadDataSheet'
+			, type : 'post'
+			, dataType : 'json'
+			, data : $('#search-bmt').serializeObject()
+			, processData : true
+			, success : function(data, stat, xhr){
+				list.empty();
+				
+				var test = '';
+				if(data.downloadDataSheet.length == 0){
+					alert('값이 없습니다.')
+				}else{
+					for(var i =0; i < data.downloadDataSheet.length; i++){
+						var dds = data.downloadDataSheet[i];
+						test += '<tr>'
+						test += '<td>' + dds.bmtid + '</td>'
+						test += '<td>' + dds.userid + '</td>'
+						test += '<td>' + dds.except_info + '</td>'
+						test += '<td>' + dds.state_condition + '</td>'
+						test += '<td>' + dds.cp + '</td>'
+						test += '<td>' + dds.carinfo + '</td>'
+						test += '<td>' + dds.startpoi + '</td>'
+						test += '<td>' + dds.endpoi + '</td>'
+						test += '<td>' + dds.real_req_time + '</td>'
+						test += '<td>' + dds.est_time + '</td>'
+						test += '<td>' + dds.bmt_start_tm + '</td>'
+						test += '<td>' + dds.bmt_end_tm + '</td>'
+						test += '<td>' + dds.real_drv_tm + '</td>'
+						test += '<td>' + dds.est_distance + '</td>'
+						test += '<td>' + dds.arrive_distance + '</td>'
+						test += '<td>' + dds.est_charge + '</td>'
+						test += '<td>' + dds.arrive_charge + '</td>'
+						test += '</tr>'
+					}
+				}
+				list.html(test);
+				console.log('테스트 값 :: ' + test);
+			}
+			, error : function(xhr, stat, err) {
+			   	alert("error");
+				console.log(err);
+			}
+		});
+	
+// 		var excelData = new Blob([document.getElementById('tbl-modal-data2').innerHTML], {
+// 			type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
+// 		});
+// 		var excelData = document.createElement('excelData');
+//         var data_type = 'data:application/vnd.ms-excel';
+//         var table_html = encodeURIComponent($("#tbl-modal-data2").html());
+//         excelData.href = data_type + ', ' + table_html;
+//         excelData.download = 'dataSheet.xls';
+        
+//         a.click();
+//         e.preventDefault();
+	
+
+		$('#excelDownDiv').hide();
+	}
+	
 	
 	dataSheetList = function() {
 		var start = $('#bmt-start-date').val();
@@ -447,111 +513,6 @@
 		    	console.log(err);
 		    }
 		});
-
-		
-// 		dataSheetDownload = function(){
-// 			var start = $('#bmt-start-date').val();
-// 			var end = $('#bmt-end-date').val();
-// 			var list = $('#datasheet_DownloadTable').children('tbody');
-// 			if (start == null || start == '' || end == null || end == '') {
-// 				return false;
-// 			}
-// 			var jsonStr = JSON.stringify($('#search-bmt').serialize());
-
-			
-// 			.ajax({
-// 				url : '/synthesisData/getDownloadFile'
-// 		        , type : 'post'
-// 				, dataType : 'json'
-// 	 			, data : $('#search-bmt').serializeObject()
-// 				, processData : true /*querySTring make false*/
-// 				, success : function(data, stat, xhr) {
-				
-// 				var test = '';
-// 				for(var i=0; i < data.list.length; i++){
-// 					test += '<tr id="'
-// 					test += data.list[i].bmtid;
-// 					test += '"style="cursor: pointer;">';
-					
-// 				}
-				
-// 			}
-			
-// 			});
-		
-		
-		
-// 					list.empty();
-// 					if (data.list.length === 0) {				
-// 						list.append('<tr><td colspan="12">검색된 값이 없습니다</tr>');					
-// 						return;
-// 						}		
-					
-					
-// 					var test = '';
-// 					for (var i = 0; i < data.list.length; i++) {
-// 						test += '<tr id = "'
-// 						test += data.list[i].bmtid;
-// 						test += '" style="cursor: pointer;">';
-// 						test += '<td>' + data.list[i].bmtid + '</td>';
-// 						if (data.list[i].state_condition == '경로이탈') {
-// 							test += '<td class="check_select">' + '경로이탈' + '</td>';
-// 						} else {
-// 							test += '<td>' + data.list[i].state_condition + '</td>';
-// 						}
-// //	 					test += '<td>' + data.list[i].state_condition + '</td>';
-// 						if(data.list[i].cp == data.list[i].cp + ' '|| data.list[i].cp == ' ' + data.list[i].cp ){
-// 							data.list[i].trim();
-// 						}else{
-// 							test += '<td>' + data.list[i].cp + '</td>';
-// 						}
-// 						test += '<td>' + data.list[i].startpoi + '</td>';
-// 						test += '<td>' + data.list[i].endpoi + '</td>';				
-// 						test += '<td>' + data.list[i].est_time + '</td>';
-// 						test += '<td>' + data.list[i].est_distance + '</td>';
-// 						test += '<td>' + data.list[i].est_charge + '</td>';
-// 						test += '<td>' + data.list[i].driver_tm + '</td>';
-// 						test += '<td>' + data.list[i].arrive_distance + '</td>';
-// 						test += '<td>' + data.list[i].arrive_charge + '</td>';
-// 						if (data.list[i].score == null) {
-// 							test += '<td>' + '' + '</td>';
-// 						} else {
-// 							test += '<td>' + data.list[i].score + '</td>';
-// 						}
-// //	 					test += '<td>' + data.list[i].score + '</td>';
-// 						test += '</tr>';
-// 					}
-// 					list.html(test);
-// 					$('.check_select').closest('tr').css( "color", '#D6C8A1' );
-						
-// 				}
-// 			    , error : function(xhr, stat, err) {
-// 			    	alert("error");
-// 			    	console.log(err);
-// 			    }
-// 			});
-		
-		
-		
-		
-// 		$.ajax({
-// 			url : '/synthesize/datasheetlist',
-// 			type : 'post',
-// 			data : {start : start, end : end},
-// // 			data : $('#search-bmt').serialize(),
-// // 			dataType : 'json',
-// 			contentType: "application/json; charset=utf-8",
-// 			success : function(data) {
-// 				if (data.code == '0') {
-// 					console.log(data.message);
-// 				} else if (data.code == '-1') {
-// 					cosole.log(data.message);
-// 				}				
-// 			},
-// 			error : function() {
-				
-// 			}
-// 		});//ajax
 	}//dataSheetList()
 	
 	/**

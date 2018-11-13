@@ -31,10 +31,10 @@ public class DataSheetController {
 	public ModelAndView getSynthesizeData(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
 		ModelAndView mav = new ModelAndView();		
 		//session check
-		if (session.getAttribute("SS_USER_ID").toString().isEmpty()
-				|| session.getAttribute("SS_CP").toString().isEmpty()
-				|| session.getAttribute("SS_CAR_INFO").toString().isEmpty()
-				|| session.getAttribute("SS_AUCODE").toString().isEmpty()) {
+		if (session.getAttribute("SS_USER_ID") == null
+				|| session.getAttribute("SS_CP") == null
+				|| session.getAttribute("SS_CAR_INFO") == null
+				|| session.getAttribute("SS_AUCODE") == null) {
 			mav.setViewName("redirect:/");
 		}
 		mav.addObject("control", "synthesisData");
@@ -76,22 +76,5 @@ public class DataSheetController {
 		return mav;		
 	}
 	
-//	@ResponseBody
-//	@RequestMapping(value = "/synthesisData/getDownloadFile", method = RequestMethod.POST)
-//	public ModelAndView getDownloadFile(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
-//		ModelAndView mav = new ModelAndView("jsonView");
-//			mav.addObject("code", "0");
-//			String startDate = request.getParameter("bmt-start-date");
-//			String endDate = request.getParameter("bmt-end-date");
-//			String userid = session.getAttribute("SS_USER_ID").toString();
-//			Map<String, Object> map = new HashMap<String, Object>();
-//			map.put("start_date", startDate);
-//			map.put("end_date", endDate);
-//			map.put("userid", userid);
-//			List<Map<String, Object>> out = dataSheetService.getDownloadFile(map);
-//			System.out.println("start_date 의 값 ::::::::::::::::::::::::" + map);
-//			mav.addObject("list", out);
-//		return mav;
-//	}
 	
 }

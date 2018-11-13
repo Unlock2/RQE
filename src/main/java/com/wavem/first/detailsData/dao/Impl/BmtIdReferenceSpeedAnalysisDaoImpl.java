@@ -29,9 +29,13 @@ public class BmtIdReferenceSpeedAnalysisDaoImpl implements BmtIdReferenceSpeedAn
 	}
 
 	@Override
-	public List<Map<String, Object>> getGraph(Map<String, Object> map) {
-		return sqlSessionTemplate.selectList("bmtIdReferenceSpeedAnalysis.selectGraph", map);
+	public List<Map<String, Object>> getCpList(Map<String, Object> map) {
+		return sqlSessionTemplate.selectList("bmtIdReferenceSpeedAnalysis.getCpList", map);
 	}
-
+	
+	@Override
+	public List<Map<String, Object>> getGraph(Map<String, Object> map) {
+		return sqlSessionTemplate.selectList("bmtIdReferenceSpeedAnalysis.getGraph", map);
+	}
 
 }

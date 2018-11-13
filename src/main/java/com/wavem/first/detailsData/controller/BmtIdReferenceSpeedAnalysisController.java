@@ -35,12 +35,12 @@ public class BmtIdReferenceSpeedAnalysisController {
 	public ModelAndView getBmtIdReferenceSpeedAnalysis(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
 		ModelAndView mav = new ModelAndView();
 		//session check
-		if (session.getAttribute("SS_USER_ID").toString().isEmpty()
-				|| session.getAttribute("SS_CP").toString().isEmpty()
-				|| session.getAttribute("SS_CAR_INFO").toString().isEmpty()
-				|| session.getAttribute("SS_AUCODE").toString().isEmpty()) {
-			mav.setViewName("redirect:/");
-		}
+				if (session.getAttribute("SS_USER_ID") == null
+						|| session.getAttribute("SS_CP") == null
+						|| session.getAttribute("SS_CAR_INFO") == null
+						|| session.getAttribute("SS_AUCODE") == null) {
+					mav.setViewName("redirect:/");
+				}
 		mav.addObject("control", "detailsData");
 		mav.addObject("sub_Control","detailsData_bmtIdReferenceSpeedAnalysis");
 		mav.setViewName("detailsData/bmtIdReferenceSpeedAnalysis");
@@ -96,30 +96,49 @@ public class BmtIdReferenceSpeedAnalysisController {
 	}
 	
 	@ResponseBody
+	@RequestMapping(value = "/detailsData/getCpList", method = RequestMethod.POST)
+	public ModelAndView getCpList(HttpServletRequest request, HttpSession session) {
+		ModelAndView mav = new ModelAndView("jsonView");
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		String bmtid = request.getParameter("bmtid").toString();
+		String userid = session.getAttribute("SS_USER_ID").toString();
+		String gpstm = request.getParameter("gpstm");
+		
+		map.put("bmtid", bmtid);
+		map.put("userid", userid);
+		map.put("gpstm", gpstm);
+		
+		System.out.println("map >>>>> " + map.toString());
+		List<Map<String, Object>> result = bmtIdReferenceSpeedAnalysisService.getCpList(map);
+		System.out.println("result >>>>> " + result.toString());
+		mav.addObject("result", result);
+		return mav;
+	}
+	
+	@ResponseBody
 	@RequestMapping(value = "/detailsData/getGraph", method = RequestMethod.POST)
 	public ModelAndView getGraph(HttpServletRequest request, HttpSession session) {
 		ModelAndView mav = new ModelAndView("jsonView");
 		Map<String, Object> map = new HashMap<String, Object>();
 		
-		String startDate = request.getParameter("start_date");
-		String endDate = request.getParameter("end_date");
 		String bmtid = request.getParameter("bmtid").toString();
 		String userid = session.getAttribute("SS_USER_ID").toString();
 		String gpstm = request.getParameter("gpstm");
+		String cp = request.getParameter("cp");
 		
-		map.put("start_date", startDate);
-		map.put("end_date", endDate);
 		map.put("bmtid", bmtid);
 		map.put("userid", userid);
 		map.put("gpstm", gpstm);
+		map.put("cp", cp);
 		
 		System.out.println("map >>>> " + map.toString());
 		
 		List<Map<String, Object>> result = bmtIdReferenceSpeedAnalysisService.getGraph(map);
+
 		mav.addObject("list", result);
 		mav.addObject("control", "detailsData");
 		mav.addObject("sub_Control","detailsData_bmtIdReferenceSpeedAnalysis");
-		System.out.println("result >>>>>>>>>>>" + result);
 		return mav;
 	}
 }

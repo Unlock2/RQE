@@ -31,19 +31,20 @@ public class HomeController {
 	@RequestMapping(value="/main", method = RequestMethod.GET)
 	public ModelAndView home(HttpSession session) throws Exception {
 		
-		ModelAndView mv = new ModelAndView("/main");
+		ModelAndView mav = new ModelAndView("/main");
 		String userid = session.getAttribute("SS_USER_ID").toString();
 		
 		System.out.println("userid ::: >>>> " + userid);
 
 		Map<String, String> param = new HashMap<String, String>();
 		
-		if (session.getAttribute("SS_USER_ID").toString().isEmpty()
-				|| session.getAttribute("SS_CP").toString().isEmpty()
-				|| session.getAttribute("SS_CAR_INFO").toString().isEmpty()
-				|| session.getAttribute("SS_AUCODE").toString().isEmpty()) {
-			mv.setViewName("redirect:/");
-		}
+		//session check
+				if (session.getAttribute("SS_USER_ID") == null
+						|| session.getAttribute("SS_CP") == null
+						|| session.getAttribute("SS_CAR_INFO") == null
+						|| session.getAttribute("SS_AUCODE") == null) {
+					mav.setViewName("redirect:/");
+				}
 		param.put("userid", userid);
 		List<Map<String, Object>> result_bmtListEvent = homeService.getBmtListEvent(param);
 
@@ -80,11 +81,11 @@ public class HomeController {
 		JSONObject jsonobj = new JSONObject();
 		jsonobj.put("result", result_map);
 		// 메뉴 선택 부분 구분을 위한 control 추가 
-		mv.addObject("control", "main");
-		mv.addObject("bmtListEvent", jsonobj);
+		mav.addObject("control", "main");
+		mav.addObject("bmtListEvent", jsonobj);
 		// ----------------------- modify 2018-08-20 ys880526 end ----------------------------------
 		
-		return mv;
+		return mav;
 		
 	}
 	

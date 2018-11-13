@@ -8,6 +8,4 @@ public interface DataSheetDao {
 
 	Map<String, Object> getDetailDataSheet(Map<String, Object> input);
 
-//	List<Map<String, Object>> getDownloadFile(Map<String, Object> input);
-
 }
